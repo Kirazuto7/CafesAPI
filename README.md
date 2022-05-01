@@ -22,9 +22,16 @@ An api containing a list of cafes and information for people to find a good plac
 
 ## Sample Requests/Response
 - GET /api/cafes
+<img src="https://i.imgur.com/GZoFE4j.png" width=1000>
+
 - GET /api/cafes/{CafeId}
+<img src="https://i.imgur.com/GZoFE4j.png" width=1000>
+
 - GET /api/cafes/id/{CafeName}
+<img src="https://i.imgur.com/GZoFE4j.png" width=1000>
+
 - GET /api/menus
+<img src="https://i.imgur.com/GZoFE4j.png" width=1000>
 
 ## Changes
 - I decided to turn the OpeningTime and ClosingTime into its own table called Schedule. The schedule contained properties relevant to a Schedule entity, but not to a Cafe such as "Monday", "Friday", etc...
