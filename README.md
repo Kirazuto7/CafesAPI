@@ -1,6 +1,21 @@
 # CafesAPI
 
-## API Endpoints
+## Important API Endpoints
+| HTTP Method |  API Endpoint                         | Description                                                                 |
+| ----------- | ------------------------------------- | --------------------------------------------------------------------------- |                               
+| GET         | /api/cafes                            | Return a list of all the cafes                                              |
+| GET         | /api/cafes/{CafeId}                   | Return a cafe for a given id                                                |
+| GET         | /api/cafes/{CafeId}/items/{ItemName}  | Return item(s) for a cafe for a given item name                             |
+| GET         | /api/cafes/id/{CafeName}              | Return a list of cafes for a given name                                     |
+| POST        | /api/cafes                            | Add a new cafe                                                              |
+| PUT         | /api/cafes/{CafeId}                   | Update an existing cafe for a given id                                      |
+| DELETE      | /api/cafes/{CafeId}                   | Delete an existing cafe for a given id, Note: Will delete children as well! |
+| GET         | /api/menus                            | Return a list of all the menus and their items                              |
+| GET         | /api/menus/{MenuId}                   | Return a menu and it's items for a given id                                 |
+| POST        | /api/menus                            | Add a new menu for an existing cafe                                         |
+| POST        | /api/locations                        | Add a new location for an existing cafe                                     |
+| POST        | /api/schedules                        | Add a new schedule for an existing cafe                                     |
+| POST        | /api/items                            | Add a new item for an existing menu                                         |
 
 ## Changes
 - I decided to turn the OpeningTime and ClosingTime into its own table called Schedule. The schedule contained properties relevant to a Schedule entity, but not to a Cafe such as "Monday", "Friday", etc...
