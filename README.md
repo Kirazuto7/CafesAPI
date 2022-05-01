@@ -1,6 +1,6 @@
 # CafesAPI
 
-## Important API Endpoints
+## API Endpoints
 | HTTP Method |  API Endpoint                         | Description                                                                 |
 | ----------- | ------------------------------------- | --------------------------------------------------------------------------- |                               
 | GET         | /api/cafes                            | Return a list of all the cafes                                              |
