@@ -33,6 +33,9 @@ An api containing a list of cafes and information for people to find a good plac
 - GET /api/menus
 <img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getmenus.png" width=500>
 
+- POST /api/cafes
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/postcafe.png" width=500>
+
 ## Changes
 - I decided to turn the OpeningTime and ClosingTime into its own table called Schedule. The schedule contained properties relevant to a Schedule entity, but not to a Cafe such as "Monday", "Friday", etc...
 - I decided to turn the Location property into its own table. The Location entity contained properties such as "zipcode", "street", "city",..etc which are relevant to a Location entity rather than a Cafe.
