@@ -7,6 +7,8 @@ namespace CafesAPI.Models
 
         public string statusDescription { get; set; }
 
-        public List<Cafe?> cafes { get; set; }
+        public List<Cafe> cafes { get; set; } = new List<Cafe> { };
+
+        //public List<Menu> menus { get; set; } = new List<Menu> { };
     }
 }

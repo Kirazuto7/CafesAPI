@@ -41,22 +41,17 @@ namespace CafesAPI.Controllers
                                           .Include(c => c.Menu).ThenInclude(c => c.Items.OrderBy(c => c.ItemName).ThenBy(c => c.Price))
                                           .Include(c => c.Schedule)
                                           .SingleOrDefaultAsync(i => i.CafeId == id);
-
+            
             var response = new Response();
 
-            /*if (cafe == null)
-            {
-               
-                return NotFound();
-            }*/
-
+        
             response.statusCode = 404;
             response.statusDescription = "Not Found";
 
             if (cafe != null)
             {
                 response.statusCode = 200;
-                response.statusDescription = "Yerrrrrr.";
+                response.statusDescription = "Ok!";
                 response.cafes.Add(cafe);
             }
 
@@ -65,18 +60,24 @@ namespace CafesAPI.Controllers
 
         // GET: api/Cafes/5/items/Americano
         [HttpGet("{id}/items/{itemName}")]
-        public async Task<ActionResult<Cafe>> GetCafeItem(int id, string itemName)
+        public async Task<ActionResult<Response>> GetCafeItem(int id, string itemName)
         {
             var cafeItem = await _context.Cafe.Include(c => c.Menu)
                                            .ThenInclude(c => c.Items.Where(i => i.ItemName == itemName))
                                            .SingleOrDefaultAsync(i => i.CafeId == id);
      
-            if (cafeItem == null)
+            var response = new Response();
+            response.statusCode = 404;
+            response.statusDescription = "Not Found";
+
+            if (cafeItem != null && cafeItem.Menu.Items.Count != 0 )
             {
-                return NotFound();
+                response.statusCode = 200;
+                response.statusDescription = "Ok!";
+                response.cafes.Add(cafeItem);
             }
 
-            return cafeItem;
+            return response;
         }
 
         // GET: api/Cafes/id/Starbucks
@@ -138,13 +139,43 @@ namespace CafesAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCafe(int id)
         {
-            var cafe = await _context.Cafe.FindAsync(id);
+            var cafe = await _context.Cafe.Include(c => c.Location)
+                                          .Include(c => c.Menu).ThenInclude(c => c.Items.OrderBy(c => c.ItemName).ThenBy(c => c.Price))
+                                          .Include(c => c.Schedule).FirstOrDefaultAsync(c => c.CafeId == id);
+
             if (cafe == null)
             {
                 return NotFound();
             }
 
             _context.Cafe.Remove(cafe);
+
+            if(cafe.Location != null)
+            {
+                var location = await _context.Location.FirstOrDefaultAsync(l => l.CafeId == id);
+                _context.Location.Remove(location);
+            }
+
+            if (cafe.Menu != null)
+            {
+                var menu = await _context.Menu.FirstOrDefaultAsync(l => l.CafeId == id);
+                _context.Menu.Remove(menu);
+                
+                if(menu.Items.Count > 0) // Items exist in the menu array
+                {
+                    foreach(Item item in menu.Items)
+                    {
+                        _context.Item.Remove(item);
+                    }
+                }
+            }
+
+            if (cafe.Schedule != null)
+            {
+                var schedule = await _context.Schedule.FirstOrDefaultAsync(l => l.CafeId == id);
+                _context.Schedule.Remove(schedule);
+            }
+
             await _context.SaveChangesAsync();
 
             return NoContent();

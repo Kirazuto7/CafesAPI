@@ -6,8 +6,8 @@ namespace CafesAPI.Models
     {
 
         public int MenuId { get; set; }
-        
-        public List<Item> Items { get; set; }
+
+        public List<Item> Items { get; set; } = new List<Item>{ };
         //[JsonIgnore]
         public int CafeId { get; set; }
     }
