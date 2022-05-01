@@ -25,22 +25,71 @@ namespace CafesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cafe>>> GetCafes()
         {
-            var x = await _context.Cafe.Include(c => c.Location).ToListAsync();
-            return await _context.Cafe.Include(c => c.Location).ToListAsync();
+            var cafes = await _context.Cafe.Include(c => c.Location)
+                                           .Include(c => c.Menu).ThenInclude(c => c.Items.OrderBy(c => c.ItemName).ThenBy(c=> c.Price))
+                                           .Include(c => c.Schedule)
+                                           .ToListAsync();
+            
+            return cafes;
         }
 
         // GET: api/Cafes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cafe>> GetCafe(int id)
+        public async Task<ActionResult<Response>> GetCafe(int id)
         {
-            var cafe = await _context.Cafe.FindAsync(id);
-         
-            if (cafe == null)
+            var cafe = await _context.Cafe.Include(c => c.Location)
+                                          .Include(c => c.Menu).ThenInclude(c => c.Items.OrderBy(c => c.ItemName).ThenBy(c => c.Price))
+                                          .Include(c => c.Schedule)
+                                          .SingleOrDefaultAsync(i => i.CafeId == id);
+
+            var response = new Response();
+
+            /*if (cafe == null)
+            {
+               
+                return NotFound();
+            }*/
+
+            response.statusCode = 404;
+            response.statusDescription = "Not Found";
+
+            if (cafe != null)
+            {
+                response.statusCode = 200;
+                response.statusDescription = "Yerrrrrr.";
+                response.cafes.Add(cafe);
+            }
+
+            return response;
+        }
+
+        // GET: api/Cafes/5/items/Americano
+        [HttpGet("{id}/items/{itemName}")]
+        public async Task<ActionResult<Cafe>> GetCafeItem(int id, string itemName)
+        {
+            var cafeItem = await _context.Cafe.Include(c => c.Menu)
+                                           .ThenInclude(c => c.Items.Where(i => i.ItemName == itemName))
+                                           .SingleOrDefaultAsync(i => i.CafeId == id);
+     
+            if (cafeItem == null)
             {
                 return NotFound();
             }
 
-            return cafe;
+            return cafeItem;
+        }
+
+        // GET: api/Cafes/id/Starbucks
+        [HttpGet("id/{cafeName}")]
+        public async Task<ActionResult<IEnumerable<Cafe>>> GetCafesByName(string cafeName)
+        {
+            var cafes = await _context.Cafe.Include(c => c.Location)
+                                           .Include(c => c.Menu).ThenInclude(c => c.Items.OrderBy(c => c.ItemName).ThenBy(c => c.Price))
+                                           .Include(c => c.Schedule)
+                                           .Where(c => c.CafeName == cafeName)
+                                           .ToListAsync();
+
+            return cafes;
         }
 
         // PUT: api/Cafes/5

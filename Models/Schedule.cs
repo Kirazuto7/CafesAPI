@@ -1,23 +1,21 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 namespace CafesAPI.Models
 {
     public class Schedule
     {
+        [JsonIgnore]
         public int ScheduleID { get; set; }
-        public string MondayOpening { get; set; }
-        public string MondayClosing { get; set; }
-        public string TuesdayOpening { get; set; }
-        public string TuesdayClosing { get; set; }
-        public string WednesdayOpening { get; set; }
-        public string WednesdayClosing { get; set; }
-        public string ThursdayOpening { get; set; }
-        public string ThursdayClosing { get; set; }
-        public string FridayOpening { get; set; }
-        public string FridayClosing { get; set; }
-        public string SaturdayOpening { get; set; }
-        public string SaturdayClosing { get; set; }
-        public string SundayOpening { get; set; }
-        public string SundayClosing { get; set; }
+        public string Monday { get; set; }
+        public string Tuesday { get; set; }
+        public string Wednesday { get; set; }
+        public string Thursday { get; set; }
+        public string Friday { get; set; }
+        public string Saturday { get; set; }
+        public string Sunday { get; set; }
+
+        //[JsonIgnore]
+        public int CafeId { get; set; }
 
     }
 }

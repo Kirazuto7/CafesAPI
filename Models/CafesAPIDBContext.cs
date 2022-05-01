@@ -20,9 +20,9 @@ namespace CafesAPI.Models
         }
 
         public DbSet<Cafe> Cafe { get; set; } = null!;
-        public DbSet<Menu> Menus { get; set; } = null!;
-        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<Menu> Menu { get; set; } = null!;
+        public DbSet<Item> Item { get; set; } = null!;
         public DbSet<Location> Location { get; set; } = null!;
-        public DbSet<Schedule> Schedules { get; set; } = null!;
+        public DbSet<Schedule> Schedule { get; set; } = null!;
     }
 }
