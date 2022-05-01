@@ -20,6 +20,12 @@ An api containing a list of cafes and information for people to find a good plac
 | POST        | /api/schedules                        | Add a new schedule for an existing cafe                                     |
 | POST        | /api/items                            | Add a new item for an existing menu                                         |
 
+## Sample Requests/Response
+- GET /api/cafes
+- GET /api/cafes/{CafeId}
+- GET /api/cafes/id/{CafeName}
+- GET /api/menus
+
 ## Changes
 - I decided to turn the OpeningTime and ClosingTime into its own table called Schedule. The schedule contained properties relevant to a Schedule entity, but not to a Cafe such as "Monday", "Friday", etc...
 - I decided to turn the Location property into its own table. The Location entity contained properties such as "zipcode", "street", "city",..etc which are relevant to a Location entity rather than a Cafe.
