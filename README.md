@@ -1,4 +1,7 @@
 # CafesAPI
+#### Author: Jordan Sukhnandan
+### Description
+An api containing a list of cafes and information for people to find a good place to study and/or do their work. Currently the api only contains information for places located in New York City.
 
 ## API Endpoints
 | HTTP Method |  API Endpoint                         | Description                                                                 |
