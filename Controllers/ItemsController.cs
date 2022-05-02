@@ -23,23 +23,41 @@ namespace CafesAPI.Controllers
 
         // GET: api/Items
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItem()
+        public async Task<ActionResult<Response>> GetItem()
         {
-            return await _context.Item.ToListAsync();
+            var items = await _context.Item.ToListAsync();
+
+            var response = new Response();
+            response.statusCode = 404;
+            response.statusDescription = "No Items Found!";
+
+            if(items.Any())
+            {
+                response.statusCode = 200;
+                response.statusDescription = "Items Found.";
+                response.items = items;
+            }
+            return response;
         }
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
+        public async Task<ActionResult<Response>> GetItem(int id)
         {
             var item = await _context.Item.FindAsync(id);
 
-            if (item == null)
+            var response = new Response();
+            response.statusCode = 404;
+            response.statusDescription = "Item Not Found!";
+           
+            if (item != null)
             {
-                return NotFound();
+                response.statusCode = 200;
+                response.statusDescription = "Found Item: " + item.ItemName;
+                response.items.Add(item);
             }
 
-            return item;
+            return response;
         }
 
         // PUT: api/Items/5
@@ -86,18 +104,24 @@ namespace CafesAPI.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
+        public async Task<Response> DeleteItem(int id)
         {
             var item = await _context.Item.FindAsync(id);
+            var response = new Response();
+            
             if (item == null)
             {
-                return NotFound();
+                response.statusCode = 404;
+                response.statusDescription = "Item Not Found!";
+                return response;
             }
 
             _context.Item.Remove(item);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            response.statusCode = 204;
+            response.statusDescription = "Successfully Deleted Item.";
+            return response;
         }
 
         private bool ItemExists(int id)

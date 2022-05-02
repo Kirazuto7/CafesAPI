@@ -23,40 +23,64 @@ namespace CafesAPI.Controllers
 
         // GET: api/Menus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Menu>>> GetMenu()
+        public async Task<ActionResult<Response>> GetMenu()
         {
             var menus = await _context.Menu.Include(m => m.Items.OrderBy(i => i.ItemName).ThenBy(i => i.Price)).ToListAsync();
-            return menus;
+            var response = new Response();
+
+            response.statusCode = 404;
+            response.statusDescription = "Menus Not Found!";
+            if(menus.Any())
+            {
+                response.statusCode = 200;
+                response.statusDescription = "Menus Found!";
+                response.menus = menus;
+            }
+
+            return response;
         }
 
         // GET: api/Menus/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Menu>> GetMenu(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Response>> GetMenu(int id)
         {
             var menu = await _context.Menu.Include(m => m.Items.OrderBy(i => i.ItemName).ThenBy(i => i.Price))
                                           .SingleOrDefaultAsync(i => i.MenuId == id);
-
-            if (menu == null)
+            var response = new Response();
+            response.statusCode = 404;
+            response.statusDescription = "Menu Not Found!";
+            if (menu != null)
             {
-                return NotFound();
+                response.statusCode = 200;
+                response.statusDescription = "Menu Found!";
+                response.menus.Add(menu);
             }
 
-            return menu;
+            return response;
         }
 
-        // GET: api/Menus/5/Items/Americano
-        [HttpGet("{id}/items/{itemName}")]
-        public async Task<ActionResult<Menu>> GetMenuItemByName(int id, string itemName)
+        // GET: api/Menus/Americano
+        [Route("api/menus/{itemName}")]
+        [HttpGet("{itemName}")]
+        public async Task<ActionResult<Response>> GetMenuItemByName(string itemName)
         {
-            var menuItems = await _context.Menu.Include(m => m.Items.Where(i => i.ItemName == itemName)).SingleOrDefaultAsync(i => i.MenuId == id);
-                                          
+            var menuItems = await _context.Menu.Include(m => m.Items.Where(i => i.ItemName == itemName)).ToListAsync();
 
-            if (menuItems == null)
+            var response = new Response();
+            response.statusCode = 404;
+            response.statusDescription = "Menu with " + itemName + " Not Found!";
+                
+            for(int i = 0; menuItems.Count > i; i++)
             {
-                return NotFound();
+                if(menuItems[i].Items.Count > 0)
+                {
+                    response.statusCode = 200;
+                    response.statusDescription = "Menus with " + itemName + " Found.";
+                    response.menus.Add(menuItems[i]);
+                }
             }
 
-            return menuItems;
+            return response;
         }
 
         // PUT: api/Menus/5
