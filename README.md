@@ -28,7 +28,7 @@ An api containing a list of cafes and information for people to find a good plac
 
 ## Sample Requests/Response
 - GET /api/cafes
-<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafes.png" width=500>
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafes.png" width=350>
 
 - GET /api/cafes/{CafeId}
 <img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafe.png" width=500>
