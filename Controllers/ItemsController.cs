@@ -63,11 +63,15 @@ namespace CafesAPI.Controllers
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
+        public async Task<Response> PutItem(int id, Item item)
         {
+            var response = new Response();
+
             if (id != item.ItemId)
             {
-                return BadRequest();
+                response.statusCode = 400;
+                response.statusDescription = "Bad Request!";
+                return response;
             }
 
             _context.Entry(item).State = EntityState.Modified;
@@ -80,7 +84,9 @@ namespace CafesAPI.Controllers
             {
                 if (!ItemExists(id))
                 {
-                    return NotFound();
+                    response.statusCode = 404;
+                    response.statusDescription = "Item Not Found!";
+                    return response;
                 }
                 else
                 {
@@ -88,18 +94,25 @@ namespace CafesAPI.Controllers
                 }
             }
 
-            return NoContent();
+            response.statusCode = 204;
+            response.statusDescription = "Successfully Updated Item.";
+            return response;
         }
 
         // POST: api/Items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        public async Task<ActionResult<Response>> PostItem(Item item)
         {
             _context.Item.Add(item);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+            var response = new Response();
+            response.statusCode = 201;
+            response.statusDescription = "Successfully Created Item with id: " + item.ItemId;
+            response.items.Add(item);
+            return response;
+            //return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
         }
 
         // DELETE: api/Items/5

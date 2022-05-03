@@ -113,11 +113,15 @@ namespace CafesAPI.Controllers
         // PUT: api/Cafes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCafe(int id, Cafe cafe)
+        public async Task<Response> PutCafe(int id, Cafe cafe)
         {
+            var response = new Response();
+
             if (id != cafe.CafeId)
             {
-                return BadRequest();
+                response.statusCode = 400;
+                response.statusDescription = "Bad Request!";
+                return response;
             }
 
             _context.Entry(cafe).State = EntityState.Modified;
@@ -130,7 +134,9 @@ namespace CafesAPI.Controllers
             {
                 if (!CafeExists(id))
                 {
-                    return NotFound();
+                    response.statusCode = 404;
+                    response.statusDescription = "Cafe Not Found!";
+                    return response;
                 }
                 else
                 {
@@ -138,18 +144,25 @@ namespace CafesAPI.Controllers
                 }
             }
 
-            return NoContent();
+            response.statusCode = 204;
+            response.statusDescription = "Successfully Updated Cafe.";
+            return response;
         }
 
         // POST: api/Cafes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cafe>> PostCafe(Cafe cafe)
+        public async Task<ActionResult<Response>> PostCafe(Cafe cafe)
         {
             _context.Cafe.Add(cafe);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCafe", new { id = cafe.CafeId }, cafe);
+            var response = new Response();
+            response.statusCode = 201;
+            response.statusDescription = "Successfully Created Cafe with id: " + cafe.CafeId;
+            response.cafes.Add(cafe);
+            return response;
+            //return CreatedAtAction("GetCafe", new { id = cafe.CafeId }, cafe);
         }
 
         // DELETE: api/Cafes/5

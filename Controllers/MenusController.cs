@@ -86,11 +86,15 @@ namespace CafesAPI.Controllers
         // PUT: api/Menus/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMenu(int id, Menu menu)
+        public async Task<Response> PutMenu(int id, Menu menu)
         {
+            var response = new Response();
+
             if (id != menu.MenuId)
             {
-                return BadRequest();
+                response.statusCode = 400;
+                response.statusDescription = "Bad Request!";
+                return response;
             }
 
             _context.Entry(menu).State = EntityState.Modified;
@@ -103,7 +107,9 @@ namespace CafesAPI.Controllers
             {
                 if (!MenuExists(id))
                 {
-                    return NotFound();
+                    response.statusCode = 404;
+                    response.statusDescription = "Menu Not Found!";
+                    return response;
                 }
                 else
                 {
@@ -111,34 +117,58 @@ namespace CafesAPI.Controllers
                 }
             }
 
-            return NoContent();
+            response.statusCode = 204;
+            response.statusDescription = "Successfully Updated Menu.";
+            return response;
         }
 
         // POST: api/Menus
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Menu>> PostMenu(Menu menu)
+        public async Task<ActionResult<Response>> PostMenu(Menu menu)
         {
             _context.Menu.Add(menu);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMenu", new { id = menu.MenuId }, menu);
+            var response = new Response();
+            response.statusCode = 201;
+            response.statusDescription = "Successfully Created Menu with id: " + menu.MenuId;
+            response.menus.Add(menu);
+            return response;
+
+            //return CreatedAtAction("GetMenu", new { id = menu.MenuId }, menu);
         }
 
         // DELETE: api/Menus/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMenu(int id)
+        public async Task<Response> DeleteMenu(int id)
         {
             var menu = await _context.Menu.FindAsync(id);
+
+            var response = new Response();
+
             if (menu == null)
             {
-                return NotFound();
+                response.statusCode = 404;
+                response.statusDescription = "Menu Not Found!";
+                return response;
+            }
+
+            if (menu.Items.Any())
+            {
+                foreach(Item item in menu.Items)
+                {
+                    _context.Item.Remove(item);
+                }
             }
 
             _context.Menu.Remove(menu);
+
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            response.statusCode = 204;
+            response.statusDescription = "Successfully Deleted Menu.";
+            return response;
         }
 
         private bool MenuExists(int id)
