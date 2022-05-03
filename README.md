@@ -15,7 +15,7 @@ An api containing a list of cafes and information for people to find a good plac
 | DELETE      | /api/cafes/{CafeId}                   | Delete an existing cafe for a given id, Note: Will delete children as well! |
 | GET         | /api/menus                            | Return a list of all the menus and their items                              |
 | GET         | /api/menus/{MenuId}                   | Return a menu and it's items for a given id                                 |
-| GET         | /api/menus/{itemName}                 | Return a list of menus containing a given item name                         |
+| GET         | /api/menus/{ItemName}                 | Return a list of menus containing a given item name                         |
 | POST        | /api/menus                            | Add a new menu for an existing cafe                                         |
 | PUT         | /api/menus/{MenuId}                   | Update an existing menu for a given id                                      |
 | DELETE      | /api/menus/{MenuId}                   | Delete an existing menu for a given id                                      |
@@ -31,16 +31,16 @@ An api containing a list of cafes and information for people to find a good plac
 <img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafes.png" width=350>
 
 - GET /api/cafes/{CafeId}
-<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafe.png" width=500>
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafebyid.png" width=500>
 
-- GET /api/cafes/id/{CafeName}
-<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafename.png" width=500>
+- GET /api/cafes/{CafeName}
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getcafesbyname.png" width=500>
 
-- GET /api/menus
-<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getmenus.png" width=500>
+- GET /api/menus/{ItemName}
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/getmenuswithitem.png" width=500>
 
-- POST /api/cafes
-<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/postcafe.png" width=500>
+- POST /api/items
+<img src="https://github.com/Kirazuto7/CafesAPI/blob/master/createitem.png" width=500>
 
 ## Changes
 - I decided to turn the OpeningTime and ClosingTime into its own table called Schedule. The schedule contained properties relevant to a Schedule entity, but not to a Cafe such as "Monday", "Friday", etc...
