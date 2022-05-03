@@ -8,17 +8,23 @@ An api containing a list of cafes and information for people to find a good plac
 | ----------- | ------------------------------------- | --------------------------------------------------------------------------- |                               
 | GET         | /api/cafes                            | Return a list of all the cafes                                              |
 | GET         | /api/cafes/{CafeId}                   | Return a cafe for a given id                                                |
-| GET         | /api/cafes/{CafeId}/items/{ItemName}  | Return item(s) for a cafe for a given item name                             |
-| GET         | /api/cafes/id/{CafeName}              | Return a list of cafes for a given name                                     |
+| GET         | /api/cafes/{CafeId}/items/{ItemName}  | Return item(s) for a cafe for a given item name and cafe id                 |
+| GET         | /api/cafes/{CafeName}                 | Return a list of cafes for a given cafe name                                |
 | POST        | /api/cafes                            | Add a new cafe                                                              |
 | PUT         | /api/cafes/{CafeId}                   | Update an existing cafe for a given id                                      |
 | DELETE      | /api/cafes/{CafeId}                   | Delete an existing cafe for a given id, Note: Will delete children as well! |
 | GET         | /api/menus                            | Return a list of all the menus and their items                              |
 | GET         | /api/menus/{MenuId}                   | Return a menu and it's items for a given id                                 |
+| GET         | /api/menus/{itemName}                 | Return a list of menus containing a given item name                         |
 | POST        | /api/menus                            | Add a new menu for an existing cafe                                         |
-| POST        | /api/locations                        | Add a new location for an existing cafe                                     |
-| POST        | /api/schedules                        | Add a new schedule for an existing cafe                                     |
+| PUT         | /api/menus/{MenuId}                   | Update an existing menu for a given id                                      |
+| DELETE      | /api/menus/{MenuId}                   | Delete an existing menu for a given id                                      |
+| GET         | /api/items                            | Return a list of all the items                                              |
+| GET         | /api/items/{ItemId}                   | Return an item for a given id                                               |
 | POST        | /api/items                            | Add a new item for an existing menu                                         |
+| PUT         | /api/items/{ItemId}                   | Update an existing item for a given id                                      |
+| DELETE      | /api/items/{ItemId}                   | Delete an existing item for a given id                                      |
+
 
 ## Sample Requests/Response
 - GET /api/cafes
